@@ -26,11 +26,11 @@ class LaravelFilemanagerServiceProvider extends ServiceProvider
         ], 'lfm_config');
 
         $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/laravel-filemanager'),
+            __DIR__.'/../public' => public_path('lfm'),
         ], 'lfm_public');
 
         $this->publishes([
-            __DIR__.'/views'  => base_path('resources/views/vendor/laravel-filemanager'),
+            __DIR__.'/views'  => base_path('resources/views/lfm'),
         ], 'lfm_view');
 
         $this->publishes([

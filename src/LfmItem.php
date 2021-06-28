@@ -115,7 +115,7 @@ class LfmItem
     public function thumbUrl()
     {
         if ($this->isDirectory()) {
-            return asset('vendor/' . Lfm::PACKAGE_NAME . '/img/folder.png');
+            return asset('lfm/img/folder.png');
         }
 
         if ($this->isImage()) {
