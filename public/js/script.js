@@ -5,58 +5,16 @@ var multi_selection_enabled = false;
 var selected = [];
 var items = [];
 
-$.fn.fab = function (options) {
-  var menu = this;
-  menu.addClass('fab-wrapper');
-
-  var toggler = $('<a>')
-    .addClass('fab-button fab-toggle')
-    .append($('<i>').addClass('fas fa-plus'))
-    .click(function () {
-      menu.toggleClass('fab-expand');
-    });
-
-  menu.append(toggler);
-
-  options.buttons.forEach(function (button) {
-    toggler.before(
-      $('<a>').addClass('fab-button fab-action')
-        .attr('data-label', button.label)
-        .attr('id', button.attrs.id)
-        .append($('<i>').addClass(button.icon))
-        .click(function () {
-          menu.removeClass('fab-expand');
-        })
-    );
-  });
-};
-
 $(document).ready(function () {
-  $('#fab').fab({
-    buttons: [
-      {
-        icon: 'fas fa-upload',
-        label: lang['nav-upload'],
-        attrs: {id: 'upload'}
-      },
-      {
-        icon: 'fas fa-folder',
-        label: lang['nav-new'],
-        attrs: {id: 'add-folder'}
-      }
-    ]
-  });
 
   actions.reverse().forEach(function (action) {
-    $('#nav-buttons > ul').prepend(
       $('<li>').addClass('nav-item').append(
         $('<a>').addClass('nav-link d-none')
           .attr('data-action', action.name)
           .attr('data-multiple', action.multiple)
           .append($('<i>').addClass('fas fa-fw fa-' + action.icon))
           .append($('<span>').text(action.label))
-      )
-    );
+      ).insertAfter('#multi_selection')
   });
 
   sortings.forEach(function (sort) {

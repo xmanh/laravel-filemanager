@@ -30,22 +30,32 @@
       <i class="fas fa-arrow-left fa-fw"></i>
       <span class="d-none d-lg-inline">{{ trans('laravel-filemanager::lfm.nav-back') }}</span>
     </a>
-    <a class="navbar-brand d-block d-lg-none" id="show_tree">
-      <i class="fas fa-bars fa-fw"></i>
-    </a>
     <a class="navbar-brand d-block d-lg-none" id="current_folder"></a>
-    <a id="loading" class="navbar-brand"><i class="fas fa-spinner fa-spin"></i></a>
-    <div class="ml-auto px-2">
-      <a class="navbar-link d-none" id="multi_selection_toggle">
-        <i class="fa fa-check-double fa-fw"></i>
-        <span class="d-none d-lg-inline">{{ trans('laravel-filemanager::lfm.menu-multiple') }}</span>
-      </a>
-    </div>
     <a class="navbar-toggler collapsed border-0 px-1 py-2 m-0" data-toggle="collapse" data-target="#nav-buttons">
       <i class="fas fa-cog fa-fw"></i>
     </a>
-    <div class="collapse navbar-collapse flex-grow-0" id="nav-buttons">
-      <ul class="navbar-nav">
+    <div class="collapse navbar-collapse" id="nav-buttons">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" data-display="grid" id="upload">
+            <i class="fas fa-upload fa-fw"></i>
+            <span>{{ trans('laravel-filemanager::lfm.nav-upload') }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-display="list" id="add-folder">
+            <i class="fas fa-folder fa-fw"></i>
+            <span>{{ trans('laravel-filemanager::lfm.nav-new') }}</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav my-2 my-lg-0">
+        <li class="nav-item" id="multi_selection">
+          <a class="nav-link d-none" id="multi_selection_toggle">
+            <i class="fa fa-check-double fa-fw"></i>
+            <span>{{ trans('laravel-filemanager::lfm.menu-multiple') }}</span>
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" data-display="grid">
             <i class="fas fa-th-large fa-fw"></i>
@@ -104,11 +114,10 @@
       </a>
     </div>
 
-    <div id="fab"></div>
   </div>
 
   <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="myModalLabel">{{ trans('laravel-filemanager::lfm.title-upload') }}</h4>
@@ -227,18 +236,18 @@
         label: lang['menu-move'],
         multiple: true
       },
-      {
-        name: 'resize',
-        icon: 'arrows-alt',
-        label: lang['menu-resize'],
-        multiple: false
-      },
-      {
-        name: 'crop',
-        icon: 'crop',
-        label: lang['menu-crop'],
-        multiple: false
-      },
+      // {
+      //   name: 'resize',
+      //   icon: 'arrows-alt',
+      //   label: lang['menu-resize'],
+      //   multiple: false
+      // },
+      // {
+      //   name: 'crop',
+      //   icon: 'crop',
+      //   label: lang['menu-crop'],
+      //   multiple: false
+      // },
       {
         name: 'trash',
         icon: 'trash',
