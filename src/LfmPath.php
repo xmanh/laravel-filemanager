@@ -113,9 +113,9 @@ class LfmPath
     public function pretty($item_path, $isDirectory = false)
     {
         return Container::getInstance()->makeWith(LfmItem::class, [
-            'lfm' => (clone $this)->setName($this->helper->getNameFromPath($item_path)),
-            'helper' => $this->helper,
-            'isDirectory' => $isDirectory
+            'lfm'         => (clone $this)->setName($this->helper->getNameFromPath($item_path)),
+            'helper'      => $this->helper,
+            'isDirectory' => $isDirectory,
         ]);
     }
 
@@ -146,7 +146,7 @@ class LfmPath
     public function isDirectory()
     {
         $working_dir = $this->path('working_dir');
-        $parent_dir = substr($working_dir, 0, strrpos($working_dir, '/'));
+        $parent_dir  = substr($working_dir, 0, strrpos($working_dir, '/'));
 
         $parent_directories = array_map(function ($directory_path) {
             return app(static::class)->translateToLfmPath($directory_path);
@@ -169,8 +169,8 @@ class LfmPath
     public function normalizeWorkingDir()
     {
         $path = $this->working_dir
-            ?: $this->helper->input('working_dir')
-            ?: $this->helper->getRootFolder();
+        ?: $this->helper->input('working_dir')
+        ?: $this->helper->getRootFolder();
 
         if ($this->is_thumb) {
             // Prevent if working dir is "/" normalizeWorkingDir will add double "//" that breaks S3 functionality
@@ -222,7 +222,7 @@ class LfmPath
         event(new ImageIsUploading($new_file_path));
         try {
             $new_file_name = $this->saveFile($file, $new_file_name);
-        } catch (\Exception $e) {
+        } catch (\Exception$e) {
             \Log::info($e);
             return $this->error('invalid');
         }
@@ -236,7 +236,7 @@ class LfmPath
     {
         if (empty($file)) {
             return $this->error('file-empty');
-        } elseif (! $file instanceof UploadedFile) {
+        } elseif (!$file instanceof UploadedFile) {
             return $this->error('instance');
         } elseif ($file->getError() == UPLOAD_ERR_INI_SIZE) {
             return $this->error('file-size', ['max' => ini_get('upload_max_filesize')]);
@@ -286,6 +286,7 @@ class LfmPath
         if (config('lfm.rename_file') === true) {
             $new_file_name = uniqid();
         } elseif (config('lfm.alphanumeric_filename') === true) {
+            $new_file_name = \Str::slug($new_file_name);
             $new_file_name = preg_replace('/[^A-Za-z0-9\-\']/', '_', $new_file_name);
         }
 
@@ -294,15 +295,15 @@ class LfmPath
         }
 
         if (config('lfm.rename_duplicates') === true) {
-            $counter = 1;
+            $counter                      = 1;
             $file_name_without_extentions = $new_file_name;
             while ($this->setName(($extension) ? $new_file_name_with_extention : $new_file_name)->exists()) {
                 if (config('lfm.alphanumeric_filename') === true) {
-                    $suffix = '_'.$counter;
+                    $suffix = '_' . $counter;
                 } else {
                     $suffix = " ({$counter})";
                 }
-                $new_file_name = $file_name_without_extentions.$suffix;
+                $new_file_name = $file_name_without_extentions . $suffix;
 
                 if ($extension) {
                     $new_file_name_with_extention = $new_file_name . '.' . $extension;
