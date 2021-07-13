@@ -289,6 +289,9 @@
             this.defaultOptions.error(file, response.join('\n'));
           }
         });
+        $('#uploadModal').on('hidden.bs.modal', function(){
+          _this.removeAllFiles()
+        });
       },
       headers: {
         'Authorization': 'Bearer ' + getUrlParam('token')
