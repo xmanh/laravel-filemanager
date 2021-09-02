@@ -10,10 +10,12 @@ class DownloadController extends LfmController
     {
         $file = $this->lfm->setName(request('file'));
 
-        if (!Storage::disk($this->helper->config('disk'))->exists($file->path('storage'))) {
+        $storage = Storage::disk($this->helper->config('disk'));
+
+        if (!$storage->exists($file->path('storage'))) {
             abort(404);
         }
 
-        return response()->download($file->path('absolute'));
+        return $storage->download($file->path('absolute'));
     }
 }
