@@ -14,8 +14,8 @@ class LfmStorageRepository
     public function __construct($storage_path, $helper)
     {
         $this->helper = $helper;
-        $this->disk = Storage::disk($this->helper->config('disk'));
-        $this->path = $storage_path;
+        $this->disk   = Storage::disk($this->helper->config('disk'));
+        $this->path   = $storage_path;
     }
 
     public function __call($function_name, $arguments)
@@ -42,7 +42,7 @@ class LfmStorageRepository
 
     public function save($file)
     {
-        $nameint = strripos($this->path, "/");
+        $nameint   = strripos($this->path, "/");
         $nameclean = substr($this->path, $nameint + 1);
         $pathclean = substr_replace($this->path, "", $nameint);
         $this->disk->putFileAs($pathclean, $file, $nameclean);
@@ -53,9 +53,20 @@ class LfmStorageRepository
         return $this->disk->url($path);
     }
 
+    private function isCloudDisk()
+    {
+        $diskName = $this->helper->config('disk');
+        return in_array($diskName, ['s3', 'minio']);
+    }
+
     public function makeDirectory()
     {
-        $this->disk->makeDirectory($this->path, ...func_get_args());
+        if ($this->isCloudDisk()) {
+            $this->disk->put($this->path . '/thumbs/.gitkeep', '');
+            $this->disk->setVisibility($this->path . '/thumbs', 'public');
+        } else {
+            $this->disk->makeDirectory($this->path, ...func_get_args());
+        }
 
         // some filesystems (e.g. Google Storage, S3?) don't let you set ACLs on directories (because they don't exist)
         // https://cloud.google.com/storage/docs/naming#object-considerations
